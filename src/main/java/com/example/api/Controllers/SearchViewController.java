@@ -37,18 +37,15 @@ public class SearchViewController implements Initializable {
     private void getSearchResults() throws IOException, InterruptedException {
 
         initialMovieDataListView.getItems().clear();
-        errMsgLabel.setVisible(false);
 
         ApiResponse apiResponse = ApiUtility.getMoviesFromOMDB(searchTextField.getText());
-
-        if(apiResponse.getSearch() != null) {
+        if (apiResponse.getSearch() != null)
+        {
             initialMovieDataListView.getItems().addAll(apiResponse.getSearchSorted());
             setMovieFound(true, false);
         }
-        else {
+        else
             setMovieFound(false, false);
-            errMsgLabel.setVisible(true);
-        }
 
     }
 
@@ -82,6 +79,6 @@ public class SearchViewController implements Initializable {
         initialMovieDataListView.setVisible(movieFound);
         getDetailsButton.setVisible(movieSelected);
         posterImageView.setVisible(movieSelected);
-        errMsgLabel.setVisible(movieFound);
+        errMsgLabel.setVisible(!movieFound);
     }
 }

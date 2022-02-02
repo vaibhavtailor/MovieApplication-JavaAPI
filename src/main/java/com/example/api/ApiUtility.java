@@ -11,6 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 public class ApiUtility {
 
@@ -42,34 +43,63 @@ public class ApiUtility {
      * This will call the omdb api with specified search term
      */
     public static ApiResponse getMoviesFromOMDB(String searchTerm) throws IOException, InterruptedException {
+
+        LocalDateTime start, responseTime, complete;
+
         searchTerm = searchTerm.trim().replace(" ", "%20");
+        start = LocalDateTime.now();
+        System.out.println("call getMoviesFromOMDB : " + start);
 
         String uri = "http://www.omdbapi.com/?apikey=cfb9b2f0&s="+searchTerm;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(uri)).build();
 
-//        //this sends result from api to file
-//        HttpResponse<Path> response = client.send(httpRequest,
-//                                                    HttpResponse.BodyHandlers.ofFile(Paths.get("jsonData")));
-//
+        //this sends the result from the API to a file
+//        HttpResponse<Path> response = client.send(httpRequest, HttpResponse
+//                                                                .BodyHandlers
+//                                                                .ofFile(Paths.get("jsonData.json")));
 //        return getMoviesJsonFile();
 
-         HttpResponse<String> response = client.send(httpRequest,
-                                                        HttpResponse.BodyHandlers.ofString());
-         String jsonString = response.body();
+        //this approach stores the API response to a String and then creates objects
+        HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        responseTime = LocalDateTime.now();
+        System.out.println("API returned :" +responseTime);
 
-         Gson gson = new Gson();
-         ApiResponse apiResponse = null;
+        String jsonString =response.body();
 
-         try{
-             apiResponse = gson.fromJson(jsonString, ApiResponse.class);
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
+        Gson gson = new Gson();
+        ApiResponse apiResponse = null;
 
-         return apiResponse;
+        try{
+            apiResponse  = gson.fromJson(jsonString, ApiResponse.class);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        complete = LocalDateTime.now();
+        System.out.println("JSON converted to objects " + complete);
+        System.out.println("total time = " + (complete.getSecond() - start.getSecond()));
+        return apiResponse;
 
+    }
+
+    /**
+     * This will call the OMDB api with the specified search term
+     */
+    public static MovieDetails getMovieDetails(String movieID) throws IOException, InterruptedException {
+        movieID = movieID.trim().replace(" ", "%20");
+
+        String uri = "http://www.omdbapi.com/?apikey=4a1010ab&i="+movieID;
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(uri)).build();
+
+        //this approach stores the API response to a String and then creates objects
+        HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        return gson.fromJson(response.body(), MovieDetails.class);
     }
 
 }
