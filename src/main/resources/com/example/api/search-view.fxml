@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -30,7 +31,12 @@
                 <ListView fx:id="initialMovieDataListView" prefHeight="501.0" prefWidth="375.0" BorderPane.alignment="CENTER" />
             </left>
             <center>
-                <ImageView fx:id="posterImageView" fitHeight="315.0" fitWidth="302.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                <StackPane BorderPane.alignment="CENTER">
+                    <children>
+                        <ImageView fx:id="posterImageView" fitHeight="315.0" fitWidth="302.0" pickOnBounds="true" preserveRatio="true" />
+                        <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
+                    </children>
+                </StackPane>
             </center>
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

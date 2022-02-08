@@ -1,32 +1,34 @@
 package com.example.api;
 
-import com.google.gson.annotations.SerializedName;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class SceneChanger {
-    @SerializedName("Source")
-    private String source;
 
-    @SerializedName("Value")
-    private String value;
+    public static void changeScenes(ActionEvent event, String fxmlFile, String movieID) throws IOException, InterruptedException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFile));
+        Scene scene = new Scene(fxmlLoader.load());
 
-    public String getSource() {
-        return source;
+        //utilize the InitializeMovie interface to call the loadMovieDetails() method
+        InitializeMovie controller = fxmlLoader.getController();
+        controller.loadMovieDetails(movieID);
+
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+    public static void changeScenes(ActionEvent event, String fxmlFile) throws IOException, InterruptedException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFile));
+        Scene scene = new Scene(fxmlLoader.load());
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String toString()
-    {
-        return String.format("%s-%s",source, value);
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 }

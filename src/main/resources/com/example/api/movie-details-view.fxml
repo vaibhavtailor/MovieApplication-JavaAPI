@@ -73,7 +73,7 @@
                 </HBox>
             </center>
             <bottom>
-                <Button mnemonicParsing="false" onAction="" text="Return to Search" BorderPane.alignment="CENTER">
+                <Button mnemonicParsing="false" onAction="#returnToSearch" text="Return to Search" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets top="20.0" />
                     </BorderPane.margin>
